@@ -1,36 +1,25 @@
 {
   "variables": {
-    "client_id": "",
-    "client_secret": "",
-    "subscription_id": "",
-    "tenant_id": ""
+    "access_key": "xxxxxxxxxxxxxxx",
+    "secret_key": "xxxxxxxxxxxxxxx"
   },
-  "builders": [
-    {
-      "type": "azure-arm",
-
-      "client_id": "{{user `client_id`}}",
-      "client_secret": "{{user `client_secret`}}",
-      "subscription_id": "{{user `subscription_id`}}",
-      "tenant_id": "{{user `tenant_id`}}",
-
-      "managed_image_resource_group_name": "output_your_resourcegroup",
-      "managed_image_name": "centos74image",
-
-      "image_publisher": "OpenLogic",
-      "image_offer": "CentOS",
-      "image_sku": "7.4",
-
-      "location": "Japan West",
-      "vm_size": "Standard_D1_v2",
-      "os_type": "Linux"
-  }
-],
+  "builders": [{
+    "type":"alicloud-ecs",
+    "access_key":"{{user `access_key`}}",
+    "secret_key":"{{user `secret_key`}}",
+    "region":"ap-northeast-1",
+    "image_name":"packer_test_image",
+    "source_image":"ubuntu_16_0402_64_20G_alibase_20180409.vhd",
+    "ssh_username":"root",
+    "instance_type":"ecs.n4.tiny",
+    "io_optimized":"true",
+    "internet_charge_type":"PayByTraffic"
+  }],
   "provisioners": [
     {
       "type": "shell",
       "scripts": [
-        "../script/centos/provision.sh"
+        "../script/ubuntu/provision.sh"
       ]
     },
   {
@@ -44,7 +33,7 @@
   {
       "type": "shell",
       "scripts": [
-        "../script/centos/deprovision.sh"
+        "../script/ubuntu/deprovision.sh"
       ]
   }
   ]
