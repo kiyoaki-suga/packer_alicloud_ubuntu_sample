@@ -1,4 +1,0 @@
-- hosts: baseimage
-  become: yes
-  roles:
-  - baseimage
