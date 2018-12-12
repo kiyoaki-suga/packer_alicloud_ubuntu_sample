@@ -49,10 +49,7 @@
 - name: Enable Tomcat7
   service: name=tomcat state=started enabled=yes
   
-- name: install yum repository
-  yum: name=https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-
 - name: Install PostgreSQL Client
   yum: name={{ item }} state=installed
   with_items:
-    - postgresql96
+    - postgresql-client-9.5
