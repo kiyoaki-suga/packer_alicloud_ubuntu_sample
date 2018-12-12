@@ -1,0 +1,58 @@
+- selinux:
+    policy: targeted
+    state: permissive
+
+- name: install ibus-kkc
+  command: yum -y install ibus-kkc vlgothic-*
+
+- name: set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: change locale
+  command: localectl set-locale LANG=ja_JP.UTF-8
+
+- name: Keyboad
+  command: localectl set-keymap jp106
+
+- name: Install Java 1.8
+  yum: name=java-1.8.0-openjdk state=present update_cache=yes
+
+- name: install apache24
+  yum: name=httpd state=present update_cache=yes
+
+- name: Add index.html
+  file:
+    path: /var/www/html/index.html
+    state: touch
+    mode: 0644
+
+- name: Edit index.html
+  blockinfile:
+    dest: /var/www/html/index.html
+    block: |
+       <html>
+       <head>
+       <title>Index Sample</title>
+       </head>
+       <body>
+       <p><font size="7" color="#0000ff">It's works!</font></p>
+       </body>
+       </html>
+
+- name: start httpd service
+  service: name=httpd state=started enabled=yes
+
+- name: Install tomcat7
+  yum: name=tomcat state=latest update_cache=yes
+
+- name: Enable Tomcat7
+  service: name=tomcat state=started enabled=yes
+  
+- name: install yum repository
+  yum: name=https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+
+- name: Install PostgreSQL Client
+  yum: name={{ item }} state=installed
+  with_items:
+    - postgresql96
